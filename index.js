@@ -19,7 +19,7 @@ server.get("/home", (req, res) =>{
 })
 
 server.use("/api", router)
-server.use("/consumer",consumerRouter)
+server.use("/con",consumerRouter)
 server.use("/item", donationRoute)
 
 const startConnection = async() =>{
