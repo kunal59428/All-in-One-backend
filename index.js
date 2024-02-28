@@ -6,11 +6,14 @@ const colors = require("colors")
 const connectToDb = require("./DB/connection")
 const donationRoute = require("./Router/donationRoute")
 require("dotenv").config()
+const FileModel = require('./FileModel');
+
 
 const server = express()
 const PORT = process.env.PORT
 
 server.use(express.json())   // for the use of body parser
+
 
 server.use(cors())
 
@@ -31,6 +34,29 @@ const startConnection = async() =>{
     } catch (error) {
         console.log(error)
     }
+
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//       cb(null, 'uploads/'); // store files in the 'uploads' folder
+//     },
+//     filename: (req, file, cb) => {
+//       cb(null, file.originalname);
+//     },
+//   });
+  
+//   const upload = multer({ storage });
+  
+//   app.post('/api/upload', upload.single('file'), (req, res) => {
+//     // Save file information to MongoDB
+//     const filePath = req.file.path;
+//     const fileModel = new FileModel({ path: filePath });
+//     fileModel.save((err, doc) => {
+//       if (err) {
+//         return res.status(500).send(err);
+//       }
+//       res.status(200).json({ fileId: doc._id });
+//     });
+//   });
 }
 
 startConnection()
