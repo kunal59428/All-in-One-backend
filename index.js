@@ -5,6 +5,7 @@ const consumerRouter = require("./Router/consumerRoute")
 const colors = require("colors")
 const connectToDb = require("./DB/connection")
 const donationRoute = require("./Router/donationRoute")
+const stripe = require("stripe")("sk_test_51PNIw3IW4TOd5CqDqwYWwplzDV6TvsUbNUdQ32Ci9xLnbD3vfrr4puUzs7nfBL83uBJH1ywKf8c6zkPUczhn423l00RlgffGEL")
 require("dotenv").config()
 // const FileModel = require('./FileModel');
 
@@ -25,6 +26,30 @@ server.use("/api", router)
 server.use("/consumer", consumerRouter)
 server.use("/item", donationRoute)
 
+server.post("/create-checkout-session", async(req, res) =>{
+    const {products} = req.body
+    // console.log(products)
+    const lineItems = products.map((product) => ({
+        price_data: {
+            currency: "inr",
+            product_data: {
+                name: product[0].name
+            },
+            unit_amount: product[0].price
+        },
+        quantity: product[1]
+    }))
+
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: lineItems,
+        mode: 'payment',
+        success_url: "https://prince-ecom.vercel.app/success",
+        cancel_url: "https://prince-ecom.vercel.app//cancel"
+    })
+    res.json({id: session.id})
+})
+
 const startConnection = async() =>{
     try {
         await connectToDb()
@@ -34,6 +59,7 @@ const startConnection = async() =>{
     } catch (error) {
         console.log(error)
     }
+    
 
 // const storage = multer.diskStorage({
 //     destination: (req, file, cb) => {
