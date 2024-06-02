@@ -6,7 +6,7 @@ const colors = require("colors")
 const connectToDb = require("./DB/connection")
 const donationRoute = require("./Router/donationRoute")
 require("dotenv").config()
-const FileModel = require('./FileModel');
+// const FileModel = require('./FileModel');
 
 
 const server = express()

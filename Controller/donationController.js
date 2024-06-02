@@ -2,7 +2,7 @@ const Donation = require("../Models/donationModel")
 
 const donation = async(req, res) =>{
     const details = req.body
-    // console.log(details)
+    console.log(details)
     const dItems = await Donation.create(details)
     res.send({msg: "Item donated successfully...", dItems})
 }
