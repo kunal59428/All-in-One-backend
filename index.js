@@ -37,28 +37,30 @@ const startConnection = async() =>{
     }
 }
 
-server.use("/create-checkout-session", async(req, res) =>{
+server.post("/create-checkout-session", async(req, res) =>{
     const {products} = req.body
-    console.log(products)
-    const lineItems = products.map((product) => ({
+    // console.log(products)
+    const lineItems = products.cartItems.map((product) => ({
         price_data: {
-            currency: "inr",
+            currency: "EUR",
             product_data: {
                 name: product.name
             },
-            unit_amount: product.price
+            unit_amount: 40
         },
-        quantity: product[1]
+        quantity: product.cartQuantity
     }))
 
     const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
+        payment_method_types: ["card"],
         line_items: lineItems,
-        mode: 'payment',
-        success_url: "https://kunal-donation.vercel.app/success",
-        cancel_url: "https://kunal-donation.vercel.app/cancel"
+        mode: "payment",
+        // success_url: "https://kunal-donation.vercel.app/success",
+        // cancel_url: "https://kunal-donation.vercel.app/cancel"
+        success_url: "http://localhost:5100/success",
+        cancel_url: "http://localhost:5100/cancel"
     })
-    res.json({_id: session.id})
+    res.json({id: session.id})
 })
 
 
