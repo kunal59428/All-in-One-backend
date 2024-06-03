@@ -6,7 +6,7 @@ const consumer_register = async(req, res) =>{
     // console.log(details)
     const duplicate = await Consumer.findOne({email: details.email})
     if (duplicate) {
-        return res.send("Email already registered")
+        return res.send({msg:"Email already registered"})
     }
     // arr.push(details)
     const hashedPassword = await bcrypt.hash(details.password, 15)
