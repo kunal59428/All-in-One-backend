@@ -6,6 +6,7 @@ const donationSchema = new Schema({
     name: { type: String, required: true },
     cat: { type: String, required: true },
     text: { type: String, required: true },
+    add: { type: String, required: true },
     phone:{ type: Number, required: true },
     profile: {
         type: String,
